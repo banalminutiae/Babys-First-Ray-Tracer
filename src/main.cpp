@@ -111,9 +111,10 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction) {
         if (hit_material_index) { // if a hit was made at all, set new origin for bouncing cast
             Material mat = world->materials[hit_material_index];
             result += Hadamard(attenuation, mat.emit_color); // diminishing light propogated to camera after bouncing
+            
             attenuation = Hadamard(attenuation, mat.reflect_color);
             ray_origin = next_origin;
-            
+
             vec3 bounce = ray_direction - 2.0f*Inner_Dot(ray_direction, next_normal)*next_normal; // inner dot is distance on normal, add twice for axis reflection
             vec3 random_bounce = Normalise_Zero(next_normal + vec3{Random_Bilateral(), Random_Bilateral(), Random_Bilateral()});
             ray_direction = Normalise_Zero(Lerp(bounce, mat.specular, random_bounce));
@@ -131,17 +132,29 @@ auto main(int argc, char **argv) -> int {
     materials[0].emit_color = {0.3f, 0.4f, 0.5f};    // sky
     materials[1].reflect_color = {0.5f, 0.5f, 0.5f}; // plane
     materials[2].reflect_color = {0.7f, 0.5f, 0.3f}; // object materials from here on out
+    materials[3].reflect_color = {0.9f, 0.0f, 0.0f};
+    materials[3].specular = 1.0f;
+    materials[4].reflect_color = {0.2f, 0.8f, 0.2f};
+    // materials[4].specular = 0.7f;
     
     Plane planes[1] = {};
     planes[0].normal = vec3{0, 0, 1};
     planes[0].d = 0.0f;
     planes[0].material_index = 1;
 
-    Sphere spheres[1] = {};
+    Sphere spheres[3] = {};
     spheres[0].position = vec3{0, 0, 0};
     spheres[0].radius = 1.0f;
     spheres[0].material_index = 2;
-    
+
+    spheres[1].position = vec3{3, -2, 0};
+    spheres[1].radius = 1.0f;
+    spheres[1].material_index = 3;
+
+    spheres[2].position = vec3{-2, -1, 2};
+    spheres[2].radius = 1.0f;
+    spheres[2].material_index = 4;
+
     World world = {};
     world.material_count = ARRAYCOUNT(materials);
     world.materials = materials;
@@ -169,7 +182,7 @@ auto main(int argc, char **argv) -> int {
         film_w = film_h * (static_cast<f32>(image.width) / static_cast<f32>(image.height));
     }
 
-    f32 rays_per_pixel = 8;
+    f32 rays_per_pixel = 16;
     f32 half_film_h = 0.5f*film_h;
     f32 half_film_w = 0.5f*film_w;
     vec3 film_centre = camera_position - camera_z * film_dist;
