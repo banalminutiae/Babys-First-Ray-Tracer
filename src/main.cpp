@@ -199,6 +199,8 @@ auto main(int argc, char **argv) -> int {
     f32 half_film_w = 0.5f*film_w;
     vec3 film_centre = camera_position - camera_z * film_dist;
 
+    f32 half_pixel_w = 0.5f/image.width;
+    f32 half_pixel_h = 0.5f/image.height;
     u32 *out = image.pixels;
     for (u32 y = 0; y < image.height; ++y) {
         f32 film_y = -1.0f + 2.0f * static_cast<f32>(y) / static_cast<f32>(image.height); 
@@ -208,8 +210,10 @@ auto main(int argc, char **argv) -> int {
             vec3 color = {};
             f32 contrib = 1.0f / static_cast<f32>(rays_per_pixel);
             for (u32 i = 0; i < rays_per_pixel; ++i) {
-                // anti-aliasing here soon
-                vec3 film_position = film_centre + (camera_x * half_film_w * film_x) + (camera_y * half_film_h * film_y); 
+                // in-pipe anti-aliasing, scatter a pixel in either direction
+                f32 off_x = film_x + Random_Bilateral() * half_pixel_w;
+                f32 off_y = film_y + Random_Bilateral() * half_pixel_h;
+                vec3 film_position = film_centre + (camera_x * half_film_w * off_x) + (camera_y * half_film_h * off_y); 
                 vec3 ray_origin = camera_position;
                 vec3 ray_direction = Normalise_Zero(film_position - camera_position);
 
