@@ -32,7 +32,6 @@ struct Material {
     f32 specular;
     vec3 emit_color;
     vec3 reflect_color;
-    vec3 color;
 };
 
 struct Plane {

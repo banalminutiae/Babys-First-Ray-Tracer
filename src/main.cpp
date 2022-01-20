@@ -140,32 +140,27 @@ static f32 Exact_Linear_To_SRGB(f32 linear_value) {
 }
 
 auto main(int argc, char **argv) -> int {
-    Material materials[5] = {};
-    materials[0].emit_color = {0.3f, 0.4f, 0.5f};    // sky
-    materials[1].reflect_color = {0.5f, 0.5f, 0.5f}; // plane
-    materials[2].reflect_color = {0.7f, 0.5f, 0.3f}; // object materials from here on out
-    materials[3].reflect_color = {0.9f, 0.0f, 0.0f};
-    materials[3].specular = 0.7f;
-    materials[4].reflect_color = {0.2f, 0.8f, 0.2f};
-    materials[4].specular = 0.5f;
+    // novel for adding more but breaks when the struct alignment changes, also less clear
+    Material materials[] = {
+        // specular, emit, reflect
+        {0,    {0.3f, 0.4f, 0.5f}, {                }},
+        {0,    {                }, {0.5f, 0.5f, 0.5f}},
+        {0,    {                }, {0.7f, 0.5f, 0.3f}}, 
+        {0.7f, {                }, {0.9f, 0.0f, 0.0f}},
+        {0.5f, {                }, {0.2f, 0.8f, 0.2f}},
+    };
     
-    Plane planes[1] = {};
-    planes[0].normal = vec3{0, 0, 1};
-    planes[0].d = 0.0f;
-    planes[0].material_index = 1;
+    Plane planes[] = {
+        // normal, d, mat index
+        {{0, 0, 1}, {0.0f}, 1},
+    };
 
-    Sphere spheres[3] = {};
-    spheres[0].position = vec3{0, 0, 0};
-    spheres[0].radius = 1.0f;
-    spheres[0].material_index = 2;
-
-    spheres[1].position = vec3{3, -2, 0};
-    spheres[1].radius = 1.0f;
-    spheres[1].material_index = 3;
-
-    spheres[2].position = vec3{-2, -1, 2};
-    spheres[2].radius = 1.0f;
-    spheres[2].material_index = 4;
+    Sphere spheres[] = {
+        // position, radius, mat index
+        {{ 0,  0, 0}, 1.0f, 2},
+        {{ 3, -2, 0}, 1.0f, 3},
+        {{-2, -1, 2}, 1.0f, 4},
+    };
 
     World world = {};
     world.material_count = ARRAYCOUNT(materials);
