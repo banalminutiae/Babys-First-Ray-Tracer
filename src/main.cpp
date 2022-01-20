@@ -28,12 +28,7 @@ static void Write_Image(char *output_file_name, Image32 image) {
     header.height = image.height;
     header.planes = 1;
     header.bits_per_pixel = 32;
-    header.compression = 0;
     header.bitmap_size = output_pixel_size;
-    header.h_resolution = 0; // pixels per meter
-    header.v_resolution = 0;
-    header.colors_used = 0;
-    header.colors_important = 0;
 
     FILE *output_file = fopen(output_file_name, "wb");
     if (output_file) {
@@ -43,12 +38,12 @@ static void Write_Image(char *output_file_name, Image32 image) {
         fwrite(image.pixels, output_pixel_size, 1, output_file);
         fclose(output_file);
     } else {
-        fprintf(stderr, "[ERROR] Unable to write output file %s.\n", output_file_name);
+        fprintf(stderr, "**ERROR** Unable to write output file %s.\n", output_file_name);
     }
 }
 
 static f32 Random_Unilateral() {
-    return rand() / (f32) RAND_MAX;
+    return static_cast<f32>(rand()) / static_cast<f32>(RAND_MAX);
 }
 
 static f32 Random_Bilateral() {
@@ -108,8 +103,8 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction) {
                 if ((t > min_hit_distance) && (t < hit_distance)) { // but not too close
                     hit_distance = t;
                     hit_material_index = this_sphere.material_index;
-                    next_origin = t*ray_direction;
-                    next_normal = Normalise_Zero(next_origin - this_sphere.position); 
+                    next_origin = ray_origin + t*ray_direction;
+                    next_normal = Normalise_Zero(t*ray_direction + sphere_relative_ray_origin); 
                 }
             }
         }
@@ -118,7 +113,10 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction) {
             result += Hadamard(attenuation, mat.emit_color); // diminishing light propogated to camera after bouncing
             attenuation = Hadamard(attenuation, mat.reflect_color);
             ray_origin = next_origin;
-            ray_direction = next_normal;
+            
+            vec3 bounce = ray_direction - 2.0f*Inner_Dot(ray_direction, next_normal)*next_normal; // inner dot is distance on normal, add twice for axis reflection
+            vec3 random_bounce = Normalise_Zero(next_normal + vec3{Random_Bilateral(), Random_Bilateral(), Random_Bilateral()});
+            ray_direction = Normalise_Zero(Lerp(bounce, mat.specular, random_bounce));
         } else { 
             Material mat = world->materials[hit_material_index];
             result += Hadamard(attenuation, mat.emit_color);
@@ -171,7 +169,7 @@ auto main(int argc, char **argv) -> int {
         film_w = film_h * (static_cast<f32>(image.width) / static_cast<f32>(image.height));
     }
 
-    f32 rays_per_pixel = 4;
+    f32 rays_per_pixel = 8;
     f32 half_film_h = 0.5f*film_h;
     f32 half_film_w = 0.5f*film_w;
     vec3 film_centre = camera_position - camera_z * film_dist;
@@ -183,7 +181,7 @@ auto main(int argc, char **argv) -> int {
             f32 film_x = -1.0f + 2.0f * static_cast<f32>(x) / static_cast<f32>(image.width);
           
             vec3 color = {};
-            f32 contrib = 1.0f / rays_per_pixel;
+            f32 contrib = 1.0f / static_cast<f32>(rays_per_pixel);
             for (u32 i = 0; i < rays_per_pixel; ++i) {
                 // anti-aliasing here soon
                 vec3 film_position = film_centre + (camera_x * half_film_w * film_x) + (camera_y * half_film_h * film_y); 
@@ -200,6 +198,6 @@ auto main(int argc, char **argv) -> int {
         fflush(stdout);
     }
     Write_Image("test.bmp", image);
-    printf("\n[Done]");
+    printf("\n** Complete! **");
     return 0;
 } 
