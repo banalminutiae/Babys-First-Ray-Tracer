@@ -127,15 +127,27 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction) {
     return result;
 }
 
+static f32 Exact_Linear_To_SRGB(f32 linear_value) {
+    if (linear_value < 0.0f) linear_value = 0.0f;
+    if (linear_value > 1.0f) linear_value = 1.0f;
+    f32 s_value;
+    if (linear_value <= 0.0031308) {
+        s_value = linear_value * 12.92f;
+    } else {
+        s_value = 1.055f * static_cast<f32>(pow(linear_value, 1.0f/2.4f)) - 0.055f;
+    }
+    return s_value;
+}
+
 auto main(int argc, char **argv) -> int {
-    Material materials[3] = {};
+    Material materials[5] = {};
     materials[0].emit_color = {0.3f, 0.4f, 0.5f};    // sky
     materials[1].reflect_color = {0.5f, 0.5f, 0.5f}; // plane
     materials[2].reflect_color = {0.7f, 0.5f, 0.3f}; // object materials from here on out
     materials[3].reflect_color = {0.9f, 0.0f, 0.0f};
-    materials[3].specular = 1.0f;
+    materials[3].specular = 0.7f;
     materials[4].reflect_color = {0.2f, 0.8f, 0.2f};
-    // materials[4].specular = 0.7f;
+    materials[4].specular = 0.5f;
     
     Plane planes[1] = {};
     planes[0].normal = vec3{0, 0, 1};
@@ -182,7 +194,7 @@ auto main(int argc, char **argv) -> int {
         film_w = film_h * (static_cast<f32>(image.width) / static_cast<f32>(image.height));
     }
 
-    f32 rays_per_pixel = 16;
+    f32 rays_per_pixel = 8;
     f32 half_film_h = 0.5f*film_h;
     f32 half_film_w = 0.5f*film_w;
     vec3 film_centre = camera_position - camera_z * film_dist;
@@ -203,7 +215,12 @@ auto main(int argc, char **argv) -> int {
 
                 color += contrib*Ray_Cast(&world, ray_origin, ray_direction);
             }
-            vec4 bmp_color = {255.0f * color, 255.0f};
+            vec4 bmp_color = {
+                255.0f*Exact_Linear_To_SRGB(color.r),
+                255.0f*Exact_Linear_To_SRGB(color.g),
+                255.0f*Exact_Linear_To_SRGB(color.b),
+                255.0f
+            };
             u32 bmp_value = Bgra_Pack_4x8(bmp_color);
             *out++ = bmp_value;
         }
