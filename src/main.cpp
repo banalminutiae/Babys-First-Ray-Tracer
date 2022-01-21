@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-static u32 Get_Total_Pixel_Size(Image32 image) {
+static constexpr u32 Get_Total_Pixel_Size(Image32 image) {
     return sizeof(u32) * image.width * image.height;
 }
 
@@ -57,7 +57,7 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction) {
     
     vec3 attenuation = {1.0f, 1.0f, 1.0f};
     
-    for (u32 ray_count = 0; ray_count < 8; ++ray_count) {
+    for (u32 ray_count = 0; ray_count < 16; ++ray_count) {
         f32 hit_distance = FLT_MAX;
         u32 hit_material_index = 0;
         vec3 next_origin = {};
@@ -143,16 +143,18 @@ auto main(int argc, char **argv) -> int {
     // novel for adding more but breaks when the struct alignment changes, also less clear
     Material materials[] = {
         // specular, emit, reflect
+        // if it generates light then it won't reflect
         {0,    {0.3f, 0.4f, 0.5f}, {                }},
         {0,    {                }, {0.5f, 0.5f, 0.5f}},
         {0,    {                }, {0.7f, 0.5f, 0.3f}}, 
-        {0.7f, {                }, {0.9f, 0.0f, 0.0f}},
+        {0.7f, {50.0f, 0.0f, 0.0f}, {                }},
         {0.5f, {                }, {0.2f, 0.8f, 0.2f}},
     };
     
     Plane planes[] = {
         // normal, d, mat index
         {{0, 0, 1}, {0.0f}, 1},
+        {{1, 0, 0}, {2.0f}, 1},
     };
 
     Sphere spheres[] = {
@@ -189,7 +191,7 @@ auto main(int argc, char **argv) -> int {
         film_w = film_h * (static_cast<f32>(image.width) / static_cast<f32>(image.height));
     }
 
-    f32 rays_per_pixel = 8;
+    f32 rays_per_pixel = 32;
     f32 half_film_h = 0.5f*film_h;
     f32 half_film_w = 0.5f*film_w;
     vec3 film_centre = camera_position - camera_z * film_dist;

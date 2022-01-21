@@ -2,8 +2,6 @@
 #include <float.h>
 #include <stdio.h>
 
-#define F32Max FLT_MAX
-#define F32Min -FLT_MAX
 #define SQUARE(x) ((x) * (x))
 #define ABS(a) ((a) > 0 ? (a) : -(a))
 #define ARRAYCOUNT(a) (sizeof(a) / sizeof((a)[0]))
