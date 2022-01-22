@@ -1,3 +1,6 @@
+#ifndef RAY_MATH_HH
+#define RAY_MATH_HH
+
 #include <math.h> // for sqrt and rand
 #include <float.h>
 #include <stdio.h>
@@ -5,9 +8,6 @@
 #define SQUARE(x) ((x) * (x))
 #define ABS(a) ((a) > 0 ? (a) : -(a))
 #define ARRAYCOUNT(a) (sizeof(a) / sizeof((a)[0]))
-
-constexpr float PI = 3.1415926f;
-constexpr float TAU = 6.283185f;
 
 typedef uint8_t  u8;
 typedef uint16_t u16;
@@ -21,6 +21,9 @@ typedef int64_t s64;
 
 typedef float f32;
 typedef double r32;
+
+constexpr float PI = 3.1415926f;
+constexpr float TAU = 6.283185f;
 
 typedef union vec2 {
     struct {
@@ -201,6 +204,7 @@ inline vec3 Normalise_Zero(vec3 a) {
     f32 len_sq = Inner_Dot(a, a);
     if (len_sq != 0.0f) {
         if (len_sq > SQUARE(0.0001f)) {
+            // loop: v[i] / root: dot product
             result = a * (1.0f / static_cast<f32>(sqrt(len_sq)));
         }
     }
@@ -229,3 +233,5 @@ inline vec3 Hadamard(vec3 a, vec3 b) {
 inline vec3 Lerp(vec3 a, f32 t, vec3 b) {
     return a*t + b*(1.0f - t);
 }
+
+#endif 

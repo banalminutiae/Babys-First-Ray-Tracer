@@ -1,3 +1,6 @@
+#ifndef RAY_HH
+#define RAY_HH
+
 #include <stdint.h>
 #include "ray_math.hh"
 
@@ -17,8 +20,8 @@ struct Bitmap_Header {
     u32 bitmap_size;
     s32 h_resolution;
     s32 v_resolution;
-    u32 colors_used;
-    u32 colors_important;
+    u32 colours_used;
+    u32 colours_important;
 };
 #pragma pack(pop)
 
@@ -28,10 +31,16 @@ struct Image32 {
     u32 *pixels;
 };
 
+struct BRDF_Table {
+    int count[3];
+    f32 *values;
+};
+
 struct Material {
     f32 specular;
-    vec3 emit_color;
-    vec3 reflect_color;
+    vec3 emit_colour;
+    vec3 reflect_colour;
+    BRDF_Table table;
 };
 
 struct Plane {
@@ -55,3 +64,9 @@ struct World {
     Plane *planes;
     Sphere *spheres;
 };
+
+struct Random_State {
+    u32 state;
+};
+
+#endif
