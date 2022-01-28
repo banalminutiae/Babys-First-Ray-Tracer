@@ -168,11 +168,11 @@ auto main(int argc, char **argv) -> int {
     Material materials[] = {
         // specular, emit, reflect
         // if it generates light then it won't reflect
-        {0,    {0.3f, 0.4f, 0.5f}, {                }},
-        {0,    {                }, {0.5f , 0.5f, 0.5f}},// floor and ceiling
-        {0.6f, {                }, {0.7f , 0.5f, 0.3f}}, 
-        {0.0f, {1.0f, 1.0f, 1.0f}, {                }},
-        {0.0f, {                }, {0.2f , 0.8f, 0.2f}},
+        { 0,    {0.3f, 0.4f, 0.5f}, {                 }},
+        { 0,    {                }, {0.5f , 0.5f, 0.5f}},// floor and ceiling
+        { 0.6f, {                }, {0.7f , 0.5f, 0.3f}}, 
+        { 0.0f, {1.0f, 1.0f, 1.0f}, {                 }},
+        { 0.0f, {                }, {0.2f , 0.8f, 0.2f}},
     };
     
     Plane planes[] = {
@@ -254,6 +254,7 @@ auto main(int argc, char **argv) -> int {
         fflush(stdout);
     }
     Write_Image("test.bmp", image);
-    printf("\n** Complete! **");
+    // printf("\x1b[34m<><> Finished <><><><><><><><><><><><><><><><><><>\n");
+    printf("\x1b[32mFinished\n");
     return 0;
 } 
