@@ -254,7 +254,6 @@ auto main(int argc, char **argv) -> int {
         fflush(stdout);
     }
     Write_Image("test.bmp", image);
-    // printf("\x1b[34m<><> Finished <><><><><><><><><><><><><><><><><><>\n");
-    printf("\x1b[32mFinished\n");
+    printf("\n <><> DONE <><>><><><><><><><><><><><><><><><>");
     return 0;
 } 
