@@ -8,6 +8,6 @@ Currently, materials are limited to magnitude of specularity.
 
 TODO:
 - Load BRDF data to objects.
-- Multithreading: At 1024 rays per pixel the image can take up to an hour to write to.
-- More realistic lighting
+- Multithreading and SIMD: At 1024 rays per pixel the image can take up to an hour to write to.
+- More realistic lighting calculations.
 - Accomodate more objects than simple spheres and planes.
