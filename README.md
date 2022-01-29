@@ -2,6 +2,8 @@
 
 A basic implementation of using ray tracing to draw interesting graphics to an image. A bitmap is written and saved rather than an OS specific window to remain reasonably system independant.
 
+Learning materials used include the [Ray Tracing in One Weekend Series](https://raytracing.github.io/) and [Handmade Hero](https://handmadehero.org/) on youtube.
+
 Currently, materials are limited to magnitude of specularity. 
 
 TODO:
