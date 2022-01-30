@@ -172,13 +172,13 @@ auto main(int argc, char **argv) -> int {
         { 0,    {                }, {0.5f , 0.5f, 0.5f}},// floor and ceiling
         { 0.6f, {                }, {0.7f , 0.5f, 0.3f}}, 
         { 0.0f, {1.0f, 1.0f, 1.0f}, {                 }},
-        { 0.0f, {                }, {0.2f , 0.8f, 0.2f}},
+        { 0.9f, {                }, {0.2f , 0.8f, 0.2f}},
+        { 0,     {0.9f, 0.0f, 0.0f}, {                 }},
     };
     
     Plane planes[] = {
         // normal, d, mat index
         {{0, 0, 1}, {0.0f}, 1},
-        {{0, 0, 1}, {2.0f}, 1}
     };
 
     Sphere spheres[] = {
@@ -186,6 +186,7 @@ auto main(int argc, char **argv) -> int {
         {{ 0,  0, 0}, 1.0f, 2},
         {{ 0, -2, 2}, 0.2f, 3},
         {{-2, -1, 1}, 1.0f, 4},
+        {{2, -1, 2}, 1.0f, 5},
     };
 
     World world = {};
