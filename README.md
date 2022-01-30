@@ -11,3 +11,5 @@ TODO:
 - Multithreading and SIMD: At 1024 rays per pixel the image can take up to an hour to write to.
 - More realistic lighting calculations.
 - Accomodate more objects than simple spheres and planes.
+
+![BMP](./data/test.bmp)
