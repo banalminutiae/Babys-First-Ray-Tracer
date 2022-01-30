@@ -12,6 +12,6 @@ TODO:
 - Load BRDF data to objects.
 - Multithreading and SIMD: At 1024 rays per pixel the image can take up to an hour to write to.
 - More realistic lighting calculations.
-- Accomodate more objects than simple spheres and planes.
+- Accomodate more objects than simple spheres and planes with the goal of implementing the Cornell box.
 
 ![BMP](./data/test.bmp)
