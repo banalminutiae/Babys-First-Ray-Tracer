@@ -4,6 +4,8 @@ A basic implementation of using ray tracing to draw interesting graphics to an i
 
 Learning materials used include the [Ray Tracing in One Weekend Series](https://raytracing.github.io/) and [Handmade Hero](https://handmadehero.org/) on youtube.
 
+Reflection quality is accurate but only at very high rays per pixel.
+
 Currently, materials are limited to magnitude of specularity. 
 
 TODO:
