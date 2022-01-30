@@ -11,7 +11,8 @@ Currently, materials are limited to magnitude of specularity.
 TODO:
 - Load BRDF data to objects.
 - Multithreading and SIMD: At 1024 rays per pixel the image can take up to an hour to write to.
-- More realistic lighting calculations.
+- More realistic lighting calculations alongisde authentic light sampling.
+- Proper camera aperture code.
 - Accomodate more objects than simple spheres and planes with the goal of implementing the Cornell box.
 
 ![BMP](./data/test.bmp)
