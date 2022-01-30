@@ -65,7 +65,7 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction, Random_S
     
     vec3 attenuation = {1.0f, 1.0f, 1.0f};
     
-    for (u32 ray_count = 0; ray_count < 8; ++ray_count) {
+    for (u32 ray_count = 0; ray_count < 16; ++ray_count) {
         f32 hit_distance = FLT_MAX;
         u32 hit_material_index = 0;
         vec3 next_origin = {};
@@ -173,7 +173,7 @@ auto main(int argc, char **argv) -> int {
         { 0.6f, {                }, {0.7f , 0.5f, 0.3f}}, 
         { 0.0f, {1.0f, 1.0f, 1.0f}, {                 }},
         { 0.9f, {                }, {0.2f , 0.8f, 0.2f}},
-        { 0,     {0.9f, 0.0f, 0.0f}, {                 }},
+        { 0,    {0.9f, 0.0f, 0.0f}, { 0.9f, 0.0f, 0.0f}},
     };
     
     Plane planes[] = {
@@ -186,7 +186,7 @@ auto main(int argc, char **argv) -> int {
         {{ 0,  0, 0}, 1.0f, 2},
         {{ 0, -2, 2}, 0.2f, 3},
         {{-2, -1, 1}, 1.0f, 4},
-        {{2, -1, 2}, 1.0f, 5},
+        {{2, -1, 2}, 0.5f, 5},
     };
 
     World world = {};
@@ -217,7 +217,7 @@ auto main(int argc, char **argv) -> int {
     }
 
     Random_State *series = (Random_State *)malloc(sizeof(Random_State));   
-    f32 rays_per_pixel = 8;
+    f32 rays_per_pixel = 1024;
     f32 half_film_h = 0.5f*film_h;
     f32 half_film_w = 0.5f*film_w;
     vec3 film_centre = camera_position - camera_z * film_dist;
