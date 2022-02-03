@@ -46,7 +46,7 @@ struct Material {
 
 
 // private:
-    
+     
 };
 
 struct Plane {
