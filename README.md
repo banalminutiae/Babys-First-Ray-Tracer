@@ -19,5 +19,5 @@ TODO:
 - Run build.bat on a windows sytem. This compiles and runs the program, opening the outputted image. This requires right environment variables for the native windows compiler to be configured first, either through VCVarsall.bat or a visual studio developers terminal.
 - There is no usage of the Windows API or any external library, so any reasonable C++ compiler is feasible if compiling on OSX or Linux.
 
-#Result 
+# Result 
 ![BMP](./data/test.bmp)
