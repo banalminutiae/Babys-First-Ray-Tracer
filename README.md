@@ -4,11 +4,12 @@ A basic implementation of using ray tracing to draw interesting graphics to an i
 
 Learning materials used include the [Ray Tracing in One Weekend Series](https://raytracing.github.io/) and [Handmade Hero](https://handmadehero.org/) on youtube.
 
-Reflection quality is accurate but only at very high rays per pixel.
+Lambertian reflection quality is accurate but only at very high rays per pixel. Rudimentary anti-aliasing is implemented.
 
 Currently, materials are limited to magnitude of specularity. 
 
 TODO:
+- Refraction as an alternative to reflection for glass properties; currently only metallic materials are supported
 - Load BRDF data to objects.
 - Multithreading and SIMD: At 1024 rays per pixel the image can take up to half an hour to write to.
 - More realistic lighting calculations alongisde authentic light sampling.

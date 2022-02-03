@@ -59,13 +59,20 @@ static f32 Random_Bilateral(Random_State *series) {
     return -1.0f + 2.0f*Random_Unilateral(series);
 }
 
+static inline vec3 Reflect_Ray(vec3 ray_direction, vec3 next_normal) {
+    return ray_direction - 2.0f*Inner_Dot(ray_direction, next_normal)*next_normal; 
+}
+
+// TODO: Material differences
+static inline void Refract_Ray(vec3 ray_direction, vec3 next_normal) {}
+
 static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction, Random_State *series) {
     f32 min_hit_distance = 0.001f;
     vec3 result = {};
     
     vec3 attenuation = {1.0f, 1.0f, 1.0f};
-    
-    for (u32 ray_count = 0; ray_count < 16; ++ray_count) {
+    u32 ray_bounce_limit = 16;
+    for (u32 ray_count = 0; ray_count < ray_bounce_limit; ++ray_count) {
         f32 hit_distance = FLT_MAX;
         u32 hit_material_index = 0;
         vec3 next_origin = {};
@@ -75,7 +82,8 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction, Random_S
         for (u32 i = 0; i < world->plane_count; ++i) {
             Plane this_plane = world->planes[i];
             f32 denom = Inner_Dot(this_plane.normal, ray_direction);
-            if ((denom < -0.0001f) || (denom > 0.0001f)) { // 0 or very close means nothing was hit
+            // 0 or very close means nothing was hit; ignoring very close hits fixes the "shadow acne" problem
+            if ((denom < -0.0001f) || (denom > 0.0001f)) { 
                 // ray plane intersection test
                 f32 t = (-this_plane.d - Inner_Dot(this_plane.normal, ray_origin)) / denom; 
                 if ((t > min_hit_distance) && (t < hit_distance)) {
@@ -124,7 +132,8 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction, Random_S
             ray_origin = next_origin;
 
             // inner dot is distance on normal, add twice for axis reflection
-            vec3 bounce = ray_direction - 2.0f*Inner_Dot(ray_direction, next_normal)*next_normal; 
+            // Lambertian Reflection?
+            vec3 bounce = Reflect_Ray(ray_direction, next_normal);
             vec3 random_bounce = Normalise_Zero(next_normal + vec3{Random_Bilateral(series),
                                                                    Random_Bilateral(series),
                                                                    Random_Bilateral(series)});
@@ -159,11 +168,10 @@ static void Load_Merl_Brdf(char *file_name, BRDF_Table *destination) {
     } else {
         fprintf(stderr, "** Error, could not load BRDF data from %s\n. **", file_name);
     }
-
     fclose(file);
 }
 
-auto main(int argc, char **argv) -> int {
+int main(int argc, char **argv) {
     // novel for adding more but breaks when the struct alignment changes, also less clear
     Material materials[] = {
         // specular, emit, reflect

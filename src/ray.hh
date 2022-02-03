@@ -40,7 +40,13 @@ struct Material {
     f32 specular;
     vec3 emit_colour;
     vec3 reflect_colour;
+    // more realistic texture practises
+    
     BRDF_Table table;
+
+
+// private:
+    
 };
 
 struct Plane {
