@@ -38,15 +38,11 @@ struct BRDF_Table {
 
 struct Material {
     f32 specular;
+    // TODO: totally fake, replace soon
     vec3 emit_colour;
     vec3 reflect_colour;
     // more realistic texture practises
-    
     BRDF_Table table;
-
-
-// private:
-     
 };
 
 struct Plane {

@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
+// there shouldn't be any instance of millions of objects being allocated
+// but just in case, u32 (uint32_t) is used over s64 (int64_t).
+
 static constexpr u32 Get_Total_Pixel_Size(Image32 image) {
     return sizeof(u32) * image.width * image.height;
 }
@@ -69,7 +72,6 @@ static inline void Refract_Ray(vec3 ray_direction, vec3 next_normal) {}
 static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction, Random_State *series) {
     f32 min_hit_distance = 0.001f;
     vec3 result = {};
-    
     vec3 attenuation = {1.0f, 1.0f, 1.0f};
     u32 ray_bounce_limit = 16;
     for (u32 ray_count = 0; ray_count < ray_bounce_limit; ++ray_count) {
@@ -172,7 +174,7 @@ static void Load_Merl_Brdf(char *file_name, BRDF_Table *destination) {
 }
 
 int main(int argc, char **argv) {
-    // novel for adding more but breaks when the struct alignment changes, also less clear
+    // novel for adding more materials but breaks when the struct alignment changes, also less clear
     Material materials[] = {
         // specular, emit, reflect
         // if it generates light then it won't reflect
