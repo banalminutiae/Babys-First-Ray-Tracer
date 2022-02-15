@@ -227,7 +227,20 @@ int main(int argc, char **argv) {
     }
 
     Random_State *series = (Random_State *)malloc(sizeof(Random_State));   
-    f32 rays_per_pixel = 1024;
+
+    u32 rays_per_pixel;
+    if (argc == 1) {
+        rays_per_pixel = 128;
+    } else if (argc == 2) {
+        // atoi is deprecated because atoi("0") and atoi("abc") result in 0 while only
+        // the former is meaningful while the latter is an error. In this case, both
+        // are errors so atoi is fine
+        rays_per_pixel = atoi(argv[1]);
+        if (rays_per_pixel == 0) {
+            rays_per_pixel = 128;
+        } 
+    }
+
     f32 half_film_h = 0.5f*film_h;
     f32 half_film_w = 0.5f*film_w;
     vec3 film_centre = camera_position - camera_z * film_dist;
