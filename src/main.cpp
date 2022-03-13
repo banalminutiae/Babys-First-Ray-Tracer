@@ -73,7 +73,7 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction, Random_S
     f32 min_hit_distance = 0.001f;
     vec3 result = {};
     vec3 attenuation = {1.0f, 1.0f, 1.0f};
-    u32 ray_bounce_limit = 16;
+    u32 ray_bounce_limit = 8;
     for (u32 ray_count = 0; ray_count < ray_bounce_limit; ++ray_count) {
         f32 hit_distance = FLT_MAX;
         u32 hit_material_index = 0;
