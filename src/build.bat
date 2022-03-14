@@ -7,7 +7,7 @@ popd
 
 set arg1 = %1
     
-pushd ..\data
+pushd ..\test
 ..\build\main.exe %arg1%
 start test.bmp
 popd
