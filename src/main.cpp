@@ -238,8 +238,10 @@ int main(int argc, char **argv) {
         rays_per_pixel = atoi(argv[1]);
         if (rays_per_pixel == 0) {
             rays_per_pixel = 128;
-        } 
+        }
     }
+    printf("rays per pixel: %d", rays_per_pixel);
+
 
     f32 half_film_h = 0.5f*film_h;
     f32 half_film_w = 0.5f*film_w;

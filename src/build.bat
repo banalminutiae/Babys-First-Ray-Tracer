@@ -5,9 +5,7 @@ pushd ..\build\
 cl -nologo -O2 -W3 -FC -Z7 -EHsc -D_CRT_SECURE_NO_WARNINGS ..\src\main.cpp 
 popd
 
-set arg1 = %1
-    
 pushd ..\test
-..\build\main.exe %arg1%
+..\build\main.exe %1
 start test.bmp
 popd
