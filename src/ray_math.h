@@ -1,5 +1,5 @@
-#ifndef RAY_MATH_HH
-#define RAY_MATH_HH
+#ifndef RAY_MATH_H
+#define RAY_MATH_H
 
 #include <math.h> // for sqrt and rand
 #include <float.h>

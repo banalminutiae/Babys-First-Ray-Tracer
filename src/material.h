@@ -1,3 +1,6 @@
+#ifndef MATERIAL_H
+#define MATERIAL_H 
+
 typedef union Material {
 
     struct {
@@ -18,3 +21,4 @@ typedef union Material {
 }
 
 
+#endif

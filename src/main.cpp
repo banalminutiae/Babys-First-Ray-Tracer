@@ -1,4 +1,4 @@
-#include "ray.hh"
+#include "ray.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>

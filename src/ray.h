@@ -1,8 +1,8 @@
-#ifndef RAY_HH
-#define RAY_HH
+#ifndef RAY_H
+#define RAY_H
 
 #include <stdint.h>
-#include "ray_math.hh"
+#include "ray_math.h"
 
 #pragma pack(push, 1)
 struct Bitmap_Header {
