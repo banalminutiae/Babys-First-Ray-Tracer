@@ -134,6 +134,24 @@ typedef union vec4 {
     }
 } vec4;
 
+typedef union Mat4 {
+    float elements[4][4];
+    // __m128 columns[4];
+
+    inline Mat4 operator[](const int &index) {
+        float* col = elements[index];
+        Mat4 result;
+        
+        result.elements[0] = col[0];
+        result.elements[1] = col[1];
+        result.elements[2] = col[2];
+        result.elements[3] = col[3];
+        
+        return result;
+    }
+}
+
+
 inline vec3 operator-(vec3 a, vec3 b) {
     vec3 result;
     result.x = a.x - b.x;

@@ -98,6 +98,7 @@ static vec3 Ray_Cast(World *world, vec3 ray_origin, vec3 ray_direction, Random_S
         }
         
         // casting spheres
+        // TODO: extract casting code into function, in function vectorize sphere data
         for (u32 i = 0; i < world->sphere_count; ++i) {
             Sphere this_sphere = world->spheres[i];
 
