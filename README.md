@@ -2,7 +2,7 @@
 
 A basic implementation of using ray tracing to draw interesting graphics to an image. A bitmap is written and saved rather than an OS specific window to remain reasonably system agnostic.
 
-Learning materials used include the [Ray Tracing in One Weekend Series](https://raytracing.github.io/) and [Handmade Hero](https://handmadehero.org/) on youtube.
+Learning materials used include the [Ray Tracing in One Weekend Series](https://raytracing.github.io/), [this blog post about lighting](https://ciechanow.ski/lights-and-shadows/) and [Handmade Hero](https://handmadehero.org/) on youtube.
 
 Lambertian reflection quality is accurate but only at very high rays per pixel. Rudimentary anti-aliasing is implemented.
 
